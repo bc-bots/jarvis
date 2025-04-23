@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node jarvis.js",
-    "dev": "nodemon jarvis.js"
+    "start": "node src/jarvis.js",
+    "dev": "nodemon src/jarvis.js"
   },
   "keywords": [],
   "author": "",
