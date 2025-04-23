@@ -4,7 +4,9 @@
   "main": "jarvis.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node jarvis.js",
+    "dev": "nodemon jarvis.js"
   },
   "keywords": [],
   "author": "",
@@ -15,5 +17,8 @@
     "discord.js": "^14.18.0",
     "dotenv": "^16.5.0",
     "mongoose": "^8.13.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
