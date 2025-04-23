@@ -6,7 +6,7 @@ import { generateTraitsPrompt, generateChatReply } from "./ai.js";
 const userMessages = new Map();
 const userMessageCount = new Map();
 const cooldowns = new Map();
-const COOLDOWN_SECONDS = 15;
+const COOLDOWN_SECONDS = 5;
 
 export async function handleMessage(message) {
   if (!message.guild || message.author.bot) return;
