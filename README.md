@@ -41,7 +41,7 @@ Jarvis is a Discord bot designed to interact with users in a sarcastic, darkly h
 
 4. Start the bot:
    ```bash
-   node jarvis.js
+   node start
    ```
 
 ## Usage
