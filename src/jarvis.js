@@ -51,4 +51,4 @@ client.on("interactionCreate", handleInteraction);
 client
   .login(process.env.JARVIS_KEY)
   .then(() => logger.ok("Authentication successful"))
-  .catch((err) => logger.err("Failed to authenticate -", err.message));
+  .catch((err) => logger.err("Failed to authenticate:", err.message));

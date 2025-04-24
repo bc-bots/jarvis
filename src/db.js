@@ -11,7 +11,7 @@ export const Trait = mongoose.model("Trait", traitSchema);
 
 export function connectToDatabase() {
   mongoose.connect(process.env.MONGO_URI).catch((err) => {
-    logger.err("MongoDB connection failed -", err.message);
+    logger.err("MongoDB connection failed:", err.message);
     process.exit(1);
   });
 }

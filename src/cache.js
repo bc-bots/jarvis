@@ -15,7 +15,7 @@ export async function loadTraitsCache() {
     logger.ok("Traits cache loaded from disk");
   } catch (err) {
     if (err.code !== "ENOENT") {
-      logger.err("Failed to load traits cache -", err.message);
+      logger.err("Failed to load traits cache:", err.message);
     } else {
       logger.sys("No cache file found - starting fresh");
     }
