@@ -66,8 +66,10 @@ export async function handleMessage(message) {
     const replyResult = await generateChatReply(
       chatHistory,
       traitDoc.trait_summary,
-      message.content
+      message.content,
+      message.author
     );
+    logger.ai("Chat reply generation:", replyResult.response.text());
     await message.channel.send(replyResult.response.text());
     // logger.ai("Chat response to", userName);
   } catch (err) {
