@@ -1,6 +1,6 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, GatewayIntentBits, REST, Routes } from "discord.js";
 import dotenv from "dotenv";
-import { handleMessage, handleInteraction } from "./commands.js";
+import { handleMessage, handleInteraction, commands } from "./commands.js";
 import { connectToDatabase } from "./db.js";
 import { loadTraitsCache, saveTraitsCache } from "./cache.js";
 import { logger } from "./utils/logger.js";
@@ -23,13 +23,26 @@ const client = new Client({
   ],
 });
 
-client.once("ready", () => {
+// Register slash commands
+client.once("ready", async () => {
   logger.discord(`Discord client initialized as ${client.user.tag}`);
   logger.ok(
     `Bot instance ready with ${
       Object.keys(client.guilds.cache).length
     } guilds loaded`
   );
+
+  const rest = new REST({ version: "10" }).setToken(process.env.JARVIS_KEY);
+
+  try {
+    logger.ok("Registering slash commands...");
+    await rest.put(Routes.applicationCommands(client.user.id), {
+      body: commands,
+    });
+    logger.ok("Slash commands registered successfully!");
+  } catch (error) {
+    logger.err("Failed to register slash commands:", error.message);
+  }
 });
 
 client.on("messageCreate", handleMessage);

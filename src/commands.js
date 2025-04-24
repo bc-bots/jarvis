@@ -1,4 +1,4 @@
-import { EmbedBuilder } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { Trait } from "./db.js";
 import { userTraitsCache } from "./cache.js";
 import { generateTraitsPrompt, generateChatReply } from "./ai.js";
@@ -69,13 +69,21 @@ export async function handleMessage(message) {
       message.content,
       message.author
     );
-    logger.ai("Chat reply generation:", replyResult.response.text());
     await message.channel.send(replyResult.response.text());
     // logger.ai("Chat response to", userName);
   } catch (err) {
     logger.err("Chat reply generation failed -", err.message);
   }
 }
+
+export const commands = [
+  new SlashCommandBuilder()
+    .setName("hello")
+    .setDescription("Replies with a greeting."),
+  new SlashCommandBuilder()
+    .setName("traits")
+    .setDescription("Displays your trait profile."),
+].map((command) => command.toJSON());
 
 export async function handleInteraction(interaction) {
   if (!interaction.isChatInputCommand()) return;
