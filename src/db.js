@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { logger } from "./utils/logger.js";
 
 export const traitSchema = new mongoose.Schema({
   _id: String, // userId
@@ -10,7 +11,7 @@ export const Trait = mongoose.model("Trait", traitSchema);
 
 export function connectToDatabase() {
   mongoose.connect(process.env.MONGO_URI).catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
-    process.exit(1); // Exit the process if the database connection fails
+    logger.err("MongoDB connection failed -", err.message);
+    process.exit(1);
   });
 }

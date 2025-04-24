@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { handleMessage, handleInteraction } from "./commands.js";
 import { connectToDatabase } from "./db.js";
 import { loadTraitsCache, saveTraitsCache } from "./cache.js";
+import { logger } from "./utils/logger.js";
 
 dotenv.config();
 
@@ -23,10 +24,18 @@ const client = new Client({
 });
 
 client.once("ready", () => {
-  console.log(`Bot ${client.user.tag} is now online.`);
+  logger.discord(`Discord client initialized as ${client.user.tag}`);
+  logger.ok(
+    `Bot instance ready with ${
+      Object.keys(client.guilds.cache).length
+    } guilds loaded`
+  );
 });
 
 client.on("messageCreate", handleMessage);
 client.on("interactionCreate", handleInteraction);
 
-client.login(process.env.JARVIS_KEY);
+client
+  .login(process.env.JARVIS_KEY)
+  .then(() => logger.ok("Authentication successful"))
+  .catch((err) => logger.err("Failed to authenticate -", err.message));

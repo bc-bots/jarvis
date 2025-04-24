@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import { logger } from "./utils/logger.js";
 
 const TRAITS_FILE = "traits_cache.json";
 export const userTraitsCache = new Map();
@@ -11,12 +12,12 @@ export async function loadTraitsCache() {
     for (const [id, traits] of Object.entries(data)) {
       userTraitsCache.set(id, traits);
     }
-    console.log("Traits cache loaded.");
+    logger.ok("Traits cache loaded from disk");
   } catch (err) {
     if (err.code !== "ENOENT") {
-      console.error("Error loading trait cache:", err);
+      logger.err("Failed to load traits cache -", err.message);
     } else {
-      console.log("Traits cache file does not exist. Starting fresh.");
+      logger.sys("No cache file found - starting fresh");
     }
   }
 }
@@ -24,5 +25,5 @@ export async function loadTraitsCache() {
 export async function saveTraitsCache() {
   const obj = Object.fromEntries(userTraitsCache);
   await fs.writeFile(TRAITS_FILE, JSON.stringify(obj, null, 2));
-  console.log("Traits cache saved.");
+  logger.ok("Traits cache synced to disk");
 }

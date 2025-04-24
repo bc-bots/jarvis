@@ -2,6 +2,7 @@ import { EmbedBuilder } from "discord.js";
 import { Trait } from "./db.js";
 import { userTraitsCache } from "./cache.js";
 import { generateTraitsPrompt, generateChatReply } from "./ai.js";
+import { logger } from "./utils/logger.js";
 
 const userMessages = new Map();
 const userMessageCount = new Map();
@@ -48,7 +49,7 @@ export async function handleMessage(message) {
         await Trait.findByIdAndUpdate(userId, { trait_summary: newSummary });
       }
     } catch (err) {
-      console.error("Trait generation error:", err);
+      logger.err("Trait generation failed -", err.message);
     }
   }
 
@@ -68,8 +69,9 @@ export async function handleMessage(message) {
       message.content
     );
     await message.channel.send(replyResult.response.text());
+    // logger.ai("Chat response to", userName);
   } catch (err) {
-    console.error("Error generating chat reply:", err);
+    logger.err("Chat reply generation failed -", err.message);
   }
 }
 
