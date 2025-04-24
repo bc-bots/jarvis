@@ -16,8 +16,16 @@ const logFile = path.join(process.cwd(), "logs", "jarvis.log");
 
 const MAX_LOG_SIZE = 128 * 1024 * 1024; // 128MB in bytes
 
+const ensureLogDirectory = () => {
+  const logDir = path.dirname(logFile);
+  if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir, { recursive: true });
+  }
+};
+
 const rotateLogIfNeeded = () => {
   try {
+    ensureLogDirectory();
     if (fs.existsSync(logFile)) {
       const stats = fs.statSync(logFile);
       if (stats.size >= MAX_LOG_SIZE) {
