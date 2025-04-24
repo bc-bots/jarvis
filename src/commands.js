@@ -42,11 +42,17 @@ export async function handleMessage(message) {
         traitDoc.trait_summary,
         messages
       );
-      const newSummary = result?.response?.text?.trim();
+      const newSummary =
+        result?.response && typeof result.response.text === "function"
+          ? result.response.text().trim()
+          : null;
       if (newSummary) {
         traitDoc.trait_summary = newSummary;
         userTraitsCache.set(userId, traitDoc);
         await Trait.findByIdAndUpdate(userId, { trait_summary: newSummary });
+        logger.db("Updated and synced trait summary for", userName);
+      } else {
+        logger.warn("Trait generation returned an invalid response structure.");
       }
     } catch (err) {
       logger.err("Trait generation failed -", err.message);
